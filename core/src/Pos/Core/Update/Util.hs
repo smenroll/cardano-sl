@@ -32,7 +32,6 @@ import           Distribution.Text (display)
 import           Formatting (Format, build)
 import           Instances.TH.Lift ()
 
-import           Pos.Binary.Class (Bi)
 import           Pos.Binary.Crypto ()
 import           Pos.Core.Common.Types (checkCoinPortion)
 import           Pos.Core.Slotting (EpochIndex, isBootstrapEra)
@@ -46,7 +45,7 @@ import           Pos.Crypto (ProtocolMagic, SafeSigner, SignTag (SignUSProposal,
                              checkSig, safeSign, safeToPublic)
 
 checkUpdatePayload
-    :: (MonadError Text m, Bi UpdateProposalToSign)
+    :: (MonadError Text m)
     => ProtocolMagic
     -> UpdatePayload
     -> m ()
@@ -94,7 +93,7 @@ checkUpdateVote pm it =
     sigValid = checkSig pm SignUSVote (uvKey it) (uvProposalId it, uvDecision it) (uvSignature it)
 
 checkUpdateProposal
-    :: (MonadError Text m, Bi UpdateProposalToSign)
+    :: (MonadError Text m)
     => ProtocolMagic
     -> UpdateProposal
     -> m ()
@@ -112,8 +111,7 @@ checkUpdateProposal pm it = do
         (throwError "UpdateProposal: invalid signature")
 
 mkUpdateProposalWSign
-    :: (Bi UpdateProposalToSign)
-    => ProtocolMagic
+    :: ProtocolMagic
     -> BlockVersion
     -> BlockVersionModifier
     -> SoftwareVersion
