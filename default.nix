@@ -69,14 +69,14 @@ let
         };
       });
 
-      cardano-sl-wallet-static = justStaticExecutables super.cardano-sl-wallet;
+      csl-wallet-static = justStaticExecutables super.csl-wallet;
       cardano-sl-networking = dontCheck super.cardano-sl-networking;
       cardano-sl-client = addRealTimeTestLogs super.cardano-sl-client;
       cardano-sl-generator = addRealTimeTestLogs super.cardano-sl-generator;
       # cardano-sl-auxx = addGitRev (justStaticExecutables super.cardano-sl-auxx);
       cardano-sl-auxx = addGitRev (justStaticExecutables super.cardano-sl-auxx);
       cardano-sl-node = addGitRev super.cardano-sl-node;
-      cardano-sl-wallet-new = addGitRev (justStaticExecutables super.cardano-sl-wallet-new);
+      csl-wallet-new = addGitRev (justStaticExecutables super.csl-wallet-new);
       cardano-sl-tools = addGitRev (justStaticExecutables (overrideCabal super.cardano-sl-tools (drv: {
         # waiting on load-command size fix in dyld
         doCheck = ! pkgs.stdenv.isDarwin;
@@ -169,7 +169,7 @@ let
       cp ${./lib}/*genesis*.json config
       cp ${cardanoPkgs.cardano-sl-tools}/bin/cardano-launcher bin
       cp ${cardanoPkgs.cardano-sl-tools}/bin/cardano-x509-certificates bin
-      cp ${cardanoPkgs.cardano-sl-wallet-new}/bin/cardano-node bin
+      cp ${cardanoPkgs.csl-wallet-new}/bin/cardano-node bin
 
       # test that binaries exit with 0
       ./bin/cardano-node --help > /dev/null
