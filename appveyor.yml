@@ -1,5 +1,5 @@
 version: 1.0.{build}
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 build: off
 
@@ -20,6 +20,9 @@ environment:
 
 init:
 - ps: $env:CACHE_S3_READY = (("$env:CACHE_S3_VERSION" -ne "") -and ("$env:S3_BUCKET" -ne "") -and ("$env:AWS_ACCESS_KEY_ID" -ne "") -and ("$env:AWS_SECRET_ACCESS_KEY" -ne ""))
+- REG QUERY HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled
+- REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+- REG QUERY HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled
 
 before_test:
 # Avoid long paths not to each MAX_PATH of 260 chars
