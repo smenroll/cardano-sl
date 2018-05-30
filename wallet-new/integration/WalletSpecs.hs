@@ -72,7 +72,7 @@ walletSpecs _ wc = do
                 >>= (`shouldPrism` _Right)
             getWallet wc walId
                 >>= (`shouldFailWith` (ClientWalletError WalletNotFound))
-            getAddressIndexPaginated wc Nothing (Just 1000)
+            getAddressIndexPaginated wc Nothing (Just 50)
                 >>= (`shouldPrism` _Right)
                 >>= (`shouldNotSatisfy` (Data.List.elem addr . wrData))
   where

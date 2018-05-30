@@ -6,12 +6,11 @@ import           Universum
 
 import           Cardano.Wallet.Client.Http
 import           Control.Lens hiding ((^..), (^?))
-import           Formatting (build, sformat)
 import           System.IO.Unsafe (unsafePerformIO)
 import           Test.Hspec
 import           Test.QuickCheck (Arbitrary (arbitrary), Gen, generate)
 
-import           Pos.Crypto.Signing (PublicKey, encToPublic)
+import           Pos.Crypto.Signing (PublicKey, encToPublic, encodeBase58PublicKey)
 import           Pos.Util.BackupPhrase (safeKeysFromPhrase)
 
 
@@ -31,7 +30,7 @@ randomExternalWallet :: WalletOperation -> IO NewExternalWallet
 randomExternalWallet walletOp =
     generate $
         NewExternalWallet
-            <$> (sformat build <$> arbitraryExtPubKey)
+            <$> (encodeBase58PublicKey <$> arbitraryExtPubKey)
             <*> arbitrary
             <*> pure "External Wallet"
             <*> pure walletOp
@@ -67,9 +66,7 @@ firstAccountAndId wc wallet = do
 
     toAccts `shouldSatisfy` (not . null)
     let (toAcct : _) = toAccts
-
-    accAddresses toAcct `shouldSatisfy` (not . null)
-    let (toAddr : _) = accAddresses toAcct
+        (toAddr : _) = accAddresses toAcct
 
     pure (toAcct, toAddr)
 

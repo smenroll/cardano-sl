@@ -40,9 +40,10 @@ accountSpecs wc = do
         it "Cannot create an address path on a non-hardened account key" $ do
             -- create a wallet
             newWallet <- randomWallet CreateWallet
-            Wallet{..} <- createWalletCheck wc newWallet
+            wallet@Wallet{..} <- createWalletCheck wc newWallet
+            (acc, _) <- firstAccountAndId wc wallet
 
-            pathResp <- postAddressPath wc walId 0
+            pathResp <- postAddressPath wc walId $ accIndex acc
             err <- pathResp `shouldPrism` _Left
             let errMsg = "AddressLevel out-of-bound: must be a 31-byte unsigned integer"
 
